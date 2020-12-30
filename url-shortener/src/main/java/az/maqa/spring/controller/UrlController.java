@@ -3,15 +3,13 @@ package az.maqa.spring.controller;
 import az.maqa.spring.exception.UrlNotFound;
 import az.maqa.spring.model.dto.UrlDTO;
 import az.maqa.spring.service.UrlService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+@CrossOrigin(value = "http://localhost:3000")
 @RestController
 public class UrlController {
 

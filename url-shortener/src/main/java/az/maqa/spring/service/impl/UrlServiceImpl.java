@@ -1,6 +1,5 @@
 package az.maqa.spring.service.impl;
 
-import az.maqa.spring.controller.UrlController;
 import az.maqa.spring.domain.Url;
 import az.maqa.spring.exception.UrlNotFound;
 import az.maqa.spring.model.dto.UrlDTO;
