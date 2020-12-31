@@ -1,16 +1,6 @@
 version: '3.1'
 
 services:
-  url-shortener-server:
-    container_name: url-shortener-server
-    build:
-      context: ../../../../.
-      dockerfile: Dockerfile.dev
-    ports:
-      - '8088:8088'
-    depends_on:
-      - mongo
-
   mongo:
     container_name: url-shortener-mongo
     image: mongo
@@ -18,5 +8,19 @@ services:
     ports:
       - '27017:27017'
     environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+
+  url-shortener-server:
+    container_name: url-shortener-server
+    build:
+      context: ../../../../.
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    ports:
+      - "8088:8088"
+    environment:
+      SPRING_DATASOURCE_URL: mongodb://localhost:27017/url_shortener
+    links:
+      - mongo
