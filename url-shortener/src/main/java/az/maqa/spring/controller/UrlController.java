@@ -1,6 +1,6 @@
 package az.maqa.spring.controller;
 
-import az.maqa.spring.exception.UrlNotFound;
+import az.maqa.spring.exception.UrlNotFoundException;
 import az.maqa.spring.model.dto.UrlDTO;
 import az.maqa.spring.service.UrlService;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +30,12 @@ public class UrlController {
         return urlService.getUrl(url);
     }
 
+    @GetMapping("/slug/{slug}")
+    public UrlDTO getFullUrl(@PathVariable String slug){
+        if(slug != null && !slug.isEmpty())
+            return urlService.getFullUrl(slug);
+        throw new RuntimeException("Slug can not be empty");
+    }
 
     private String checkUrlIsValid(String url) {
         try {
@@ -38,15 +44,13 @@ public class UrlController {
                 HttpURLConnection urlConnection = (HttpURLConnection) urlObject.openConnection();
 
                 if (urlConnection.getResponseCode() == 404) {
-                    throw new UrlNotFound("Url not found");
+                    throw new UrlNotFoundException("Url not found");
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return url;
     }
-
 
 }

@@ -1,7 +1,7 @@
 package az.maqa.spring.service.impl;
 
 import az.maqa.spring.domain.Url;
-import az.maqa.spring.exception.UrlNotFound;
+import az.maqa.spring.exception.UrlNotFoundException;
 import az.maqa.spring.model.dto.UrlDTO;
 import az.maqa.spring.repository.UrlRepository;
 import az.maqa.spring.service.UrlService;
@@ -27,15 +27,27 @@ public class UrlServiceImpl implements UrlService {
         url.setShortUrl(shortUrl);
 
         Url savedUrl = urlRepository.save(url);
-        return new UrlDTO(savedUrl.getUrl(), savedUrl.getShortUrl());
+        return mapToDto(savedUrl);
     }
 
     @Override
     public UrlDTO getUrl(String url) {
         Url foundedUrl = urlRepository.findByUrl(url);
         if (foundedUrl == null) {
-            throw new UrlNotFound("Url Not Found!!!");
+            throw new UrlNotFoundException("Url Not Found!!!");
         }
+        return mapToDto(foundedUrl);
+    }
+
+    @Override
+    public UrlDTO getFullUrl(final String slug) {
+        Url url = urlRepository.findUrlByShortUrl(slug);
+        if (url == null)
+            throw new UrlNotFoundException("Url not found for this slug:  " + slug);
+        return mapToDto(url);
+    }
+
+    private UrlDTO mapToDto(Url foundedUrl) {
         return new UrlDTO(foundedUrl.getUrl(), foundedUrl.getShortUrl());
     }
 }

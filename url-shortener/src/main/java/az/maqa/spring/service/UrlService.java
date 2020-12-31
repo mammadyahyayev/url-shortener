@@ -8,4 +8,5 @@ public interface UrlService {
 
     UrlDTO getUrl(String url);
 
+    UrlDTO getFullUrl(String slug);
 }
